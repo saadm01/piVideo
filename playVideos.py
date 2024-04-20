@@ -95,17 +95,12 @@ def download_videos(service, videos):
     print("Downloading complete.")
     return downloaded_videos
 
-def create_playlist(videos):
-    playlist_path = os.path.join(VIDEO_DIR, 'playlist.m3u')
-    with open(playlist_path, 'w') as playlist_file:
-        for video in videos:
-            playlist_file.write(f"{os.path.abspath(video)}\n")
-    return playlist_path
-
-def play_videos_in_vlc(playlist_path):
-    print(f"Playing videos in VLC: {playlist_path}")
+def play_videos_in_vlc(videos):
+    print("Playing videos in VLC...")
     vlc_exe = r"/usr/bin/vlc"  # Path to VLC executable on Raspberry Pi
-    subprocess.Popen([vlc_exe, '--fullscreen', '--loop', playlist_path])
+    for video in videos:
+        print(f"Playing video: {video}")
+        subprocess.Popen([vlc_exe, '--fullscreen', '--loop', video])
 
 def main():
     creds = authenticate_google_drive()
@@ -118,8 +113,7 @@ def main():
 
     if videos:
         downloaded_videos = download_videos(service, videos)
-        playlist_path = create_playlist(downloaded_videos)
-        play_videos_in_vlc(playlist_path)
+        play_videos_in_vlc(downloaded_videos)
     else:
         print("No videos found in the specified folder.")
 
