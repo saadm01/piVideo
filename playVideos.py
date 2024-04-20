@@ -6,19 +6,16 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 
-# Google Drive API credentials
-CLIENT_ID = '135434687674-f2rkhlp37dd51lik6h6h6p3at0lktckr.apps.googleusercontent.com'
-CLIENT_SECRET = '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'
-API_NAME = 'drive'
-API_VERSION = 'v3'
-SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
-
 # Directory to store downloaded videos
 VIDEO_DIR = 'videos'
 
 def authenticate_google_drive():
     print("Authenticating Google Drive...")
     creds = None
+
+    # Change the working directory to the directory where the script is located
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(script_dir)
 
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first time.
@@ -32,7 +29,7 @@ def authenticate_google_drive():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                os.path.join(os.getcwd(), 'credentials.json'), SCOPES)
+                os.path.join(script_dir, 'credentials.json'), ['https://www.googleapis.com/auth/drive.readonly'])
             creds = flow.run_local_server(port=0)
 
         # Save the credentials for the next run
@@ -95,16 +92,9 @@ def download_videos(service, videos):
     print("Downloading complete.")
     return downloaded_videos
 
-def play_videos_in_vlc(videos):
-    print("Playing videos in VLC...")
-    vlc_exe = r"/usr/bin/vlc"  # Path to VLC executable on Raspberry Pi
-    for video in videos:
-        print(f"Playing video: {video}")
-        subprocess.Popen([vlc_exe, '--fullscreen', '--loop', video])
-
 def main():
     creds = authenticate_google_drive()
-    service = build(API_NAME, API_VERSION, credentials=creds)
+    service = build('drive', 'v3', credentials=creds)
 
     # Replace 'YOUR_FOLDER_ID' with the actual ID of your Google Drive folder
     folder_id = '1RXsEMszDRXWB1jSVUqr9551gxUDMSLJ3'
@@ -113,7 +103,7 @@ def main():
 
     if videos:
         downloaded_videos = download_videos(service, videos)
-        play_videos_in_vlc(downloaded_videos)
+        # You can proceed with playing the videos here
     else:
         print("No videos found in the specified folder.")
 
