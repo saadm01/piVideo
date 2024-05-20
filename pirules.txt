@@ -1,0 +1,9 @@
+Pre install
+pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client --break-system-packages
+
+Crontab
+XDG_RUMETIME_DIR=/run/user/1000
+DISPLAY=:0
+@reboot sleep 60 && /usr/bin/python3 /home/admin/playAds/piVideo/playVideos.py >> /home/admin/playAds/cronLogsReboot.log 2&1
+
+* * * * * /home/admin/playAds/piVideo/runner.sh >> /home/admin/playAds/cronLogsWeekly.log 2&1
