@@ -104,7 +104,7 @@ def play_videos_in_vlc(videos):
     vlc_exe = r"/usr/bin/vlc"  # Path to VLC executable on Raspberry Pi
     for video in videos:
         print(f"Playing video: {video}")
-        subprocess.Popen([vlc_exe, '--fullscreen','--no-video-title-show', '--loop', video])
+        subprocess.Popen([vlc_exe, '--fullscreen','--no-video-title-show', '--loop', '--no-audio', video])
 
 def main():
     creds = authenticate_google_drive()
