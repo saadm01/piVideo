@@ -108,7 +108,7 @@ def play_videos_in_vlc(videos):
 def main():
     log_current_time()  # Log the current time and date
 
-    # Ensure the video directory exists
+    # Ensure the video directory exists at the start
     if not os.path.exists(VIDEO_DIR):
         os.makedirs(VIDEO_DIR)
 
