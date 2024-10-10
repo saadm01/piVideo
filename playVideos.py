@@ -9,7 +9,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 
 # Google Drive API credentials
-CLIENT_ID = '135434687674-f2rkhlp37dd51lik6h6h6h3at0lktckr.apps.googleusercontent.com'
+CLIENT_ID = '135434687674-f2rkhlp37dd51lik6h6h6p3at0lktckr.apps.googleusercontent.com'
 CLIENT_SECRET = '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'
 API_NAME = 'drive'
 API_VERSION = 'v3'
@@ -108,8 +108,9 @@ def play_videos_in_vlc(videos):
 def main():
     log_current_time()  # Log the current time and date
 
-    # Check if internet is available
+    # Check if internet is available and print status
     if is_internet_available():
+        print("Internet connection available.")
         creds = authenticate_google_drive()
         service = build(API_NAME, API_VERSION, credentials=creds)
         
