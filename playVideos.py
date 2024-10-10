@@ -16,7 +16,7 @@ API_VERSION = 'v3'
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
 # Directory to store downloaded videos
-VIDEO_DIR = 'videos'
+VIDEO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'videos')
 
 def log_current_time():
     """Print the current date and time."""
@@ -107,6 +107,10 @@ def play_videos_in_vlc(videos):
 
 def main():
     log_current_time()  # Log the current time and date
+
+    # Ensure the video directory exists
+    if not os.path.exists(VIDEO_DIR):
+        os.makedirs(VIDEO_DIR)
 
     # Check if internet is available and print status
     if is_internet_available():
